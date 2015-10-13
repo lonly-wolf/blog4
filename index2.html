@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI代码加密解密</title>
+<style type="text/css">
+#text1 {
+	background-color: #CCFF00;
+	height: 53px;
+	width: 332px;
+	position: absolute;
+	left: 318px;
+	top: 83px;
+	color: #2AFF55;
+}
+#text3 {
+	background-color: #0033CC;
+	height: 310px;
+	width: 782px;
+	position: absolute;
+	left: 245px;
+	top: 189px;
+	color: #2AFF55;
+	display: none;
+	text-align: left;
+	line-height: 0px;
+	vertical-align: text-top;
+}
+.text2 {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 36px;
+	font-style: italic;
+	font-weight: bold;
+	color: #3F3;
+	text-decoration: none;
+	position: absolute;
+	left: 338px;
+	top: 88px;
+}
+.button {
+	height: 50px;
+	width: 100px;
+	position: absolute;
+	left: 692px;
+	top: 87px;
+}
+.button2 {
+	height: 50px;
+	width: 100px;
+	position: absolute;
+	left: 823px;
+	top: 86px;
+}
+</style>
+</head>
+
+<body background="47385.jpg">
+
+<input type="text" class="text1" id="text1" name="text1"/>
+<input type="button" class="button" value="URI加密" onclick="encryption();"/>
+<input type="button" class="button2" value="URI解密" onclick="deciphering();"/>
+<input type="text" class="text3" id="text3" name="text3"/>
+<script language="javascript">
+function deciphering()
+{
+var string=document.getElementById('text1').value;
+var string2=decodeURI(string);
+document.getElementById('text3').value=string2;
+document.getElementById('text3').style.display='block';
+alert('解密成功:'+string2);
+}
+function encryption()
+{
+var string=document.getElementById('text1').value;
+var string2=encodeURI(string);
+document.getElementById('text3').value=string2;
+alert('加密成功:'+string2);
+
+}
+</script>
+</body>
+</html>
