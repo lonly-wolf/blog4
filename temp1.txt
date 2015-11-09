@@ -1,0 +1,2 @@
+this is a temp1.txt
+stash command test
