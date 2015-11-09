@@ -1,1 +1,2 @@
-this is a text type 2
+hello readme2.txt
+
