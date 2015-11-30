@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name='viewport' content="width=device-width" />
+<title>天气预报实例</title>
+<style type="text/css">
+.mainClass {
+	font-family: Arial, Helvetica, sans-serif;
+	height: 200px;
+	width: 200px;
+}
+.textFont {
+	color: #0C0;
+}
+</style>
+</head>
+
+<body bgcolor="#6633FF" >
+<p class="textFont">请选择要查询的城市：</p>
+<select id='citys'>
+<option>北京</option>
+<option>石家庄</option>
+<option>唐山</option>
+<option>秦皇岛</option>
+<option>天津</option>
+<option>大连</option>
+<option>铁岭</option>
+<option>保定</option>
+<option>沧州</option>
+<option>廊坊</option>
+<option>晋州</option>
+<option>霸州</option>
+</select>
+<br/><br/>
+<button onclick="getWeather()">查询</button>
+<br/><br/>
+<p id='result'></p>
+<script>
+'use strict'
+function goSearch()
+{
+	var search_city=document.getElementById('citys').value;
+	alert('您要查询的城市为：' + search_city);
+	
+}
+//构造回调函数
+function requiredInfo(data)
+{
+    var weather_info=document.getElementById('result');
+	weather_info.innerHTML = '执行查询成功！';
+	weather_info.innerHTML='查询状态：' + data['desc'] + '<br/>' +
+	                            '感冒指数：' + data['data'].ganmao + '<br/>' +
+							         '城市：' + data['data'].city + '<br/>' +
+							             '风向：' + data['data'].forecast[0].fengxiang + '<br/>'+
+								             '风力：' + data['data'].forecast[0].fengli + '<br/>'+
+									             '高温：' + data['data'].forecast[0].high + '<br/>'+
+										             '低温：' + data['data'].forecast[0].low + '<br/>'+
+											             '日期：' + data['data'].forecast[0].date + '<br/>';	
+}
+//构造本地化脚本函数
+function getWeather()
+{
+	var city=document.getElementById('citys').value;
+	var js=document.createElement('script');
+	var head=document.getElementsByTagName('head')[0];
+	js.src='http://wthrcdn.etouch.cn/weather_mini?city='+ city +'&callback=requiredInfo';
+	head.appendChild(js);
+}
+
+</script>
+</body>
+</html>
