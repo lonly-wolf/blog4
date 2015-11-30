@@ -13,10 +13,14 @@
 .textFont {
 	color: #0C0;
 }
+#result {
+	color: #6F3;
+	text-decoration: blink;
+}
 </style>
 </head>
 
-<body bgcolor="#6633FF" >
+<body background="12160.jpg" >
 <p class="textFont">请选择要查询的城市：</p>
 <select id='citys'>
 <option>北京</option>
@@ -35,7 +39,7 @@
 <br/><br/>
 <button onclick="getWeather()">查询</button>
 <br/><br/>
-<p id='result'></p>
+<p id='result' ></p>
 <script>
 'use strict'
 function goSearch()
