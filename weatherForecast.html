@@ -52,6 +52,7 @@
 <p id='locals' class='local'></p>
 <input type='text' id='newCity' value='城市名称' onmousedown="clearText()"/>
 &nbsp;<button type='button' onclick="fastSearch()">快速查找 </button>
+<br/>
 <p class="textFont">请选择要查询的城市：&nbsp;
 <select id='citys' onchange="changeText()">
 <option value="北京">北京</option>
@@ -436,7 +437,7 @@ var city=document.getElementById('citys').value;
 	  else
 	  {
 		  alert('请输入城市名称（例如 北京）');
-		  newcity.value =localCity;
+		  newcity.value =cityList.value;
 	  }
 	
 	}
@@ -448,6 +449,8 @@ var city=document.getElementById('citys').value;
 	  newcity.value=cityList.value;
 	  getWeather();
 	}
+	getWeather();
+	
 	</script>
     
     
