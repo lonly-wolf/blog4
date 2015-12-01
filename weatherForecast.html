@@ -48,11 +48,12 @@
 </script>
 </head>
 
-<body background="pic/345769.jpg" background-attachment: fixed;  background-repeat:no-repeat; >
+<body background="pic/bg.jpg">
 <p id='locals' class='local'></p>
-
-<p class="textFont">请选择要查询的城市：
-<select id='citys'>
+<input type='text' id='newCity' value='城市名称' onmousedown="clearText()"/>
+&nbsp;<button type='button' onclick="fastSearch()">快速查找 </button>
+<p class="textFont">请选择要查询的城市：&nbsp;
+<select id='citys' onchange="changeText()">
 <option value="北京">北京</option>
 <option value="石家庄">石家庄</option>
 <option value="晋州"> 晋州 </option>
@@ -65,8 +66,6 @@
 <option value="廊坊">廊坊</option>
 <option value="霸州">霸州</option>
 </select>
-<input type='text' id='newCity' value='城市名称' onmousedown="clearText()"/>
-<button type='button' onclick="fastSearch()">快速查找 </button>
 </p>
 <button onclick="getWeather()">今日天气</button>
 <button onclick="getFuture()">未来五天天气</button>
@@ -438,12 +437,19 @@ var city=document.getElementById('citys').value;
 	  {
 		  alert('请输入城市名称（例如 北京）');
 		  newcity.value =localCity;
-		  
-		  
 	  }
 	
 	}
+	
+	function changeText()
+	{
+		var newcity=document.getElementById('newCity');
+	  var cityList=document.getElementById('citys');
+	  newcity.value=cityList.value;
+	  getWeather();
+	}
 	</script>
+    
     
  
 </body>
