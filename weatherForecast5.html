@@ -45,71 +45,9 @@
 //标准JSON数据可以通过callback函数进行操作
 // var returnNium... 则需要引入js文件  然后通过returnNium...进行访问
 </script>
-<script src="http://api.map.baidu.com/api?v=2.0&ak=jzytLGgPaD32DYXYCODjyDgm" type="text/javascript"></script>  
-  <script>
-	//通过HTML5进行定位
-	function getLocation()
-	{
-		//初始化option属性
-		var options=
-		{
-			enableHighAccuracy:true,
-			maximumAge:1000
-		}
-		if(navigator.geolocation)
-	{
-		alert('您的浏览器支持HTML5');
-		navigator.geolocation.getCurrentPosition(onSuccess,onError,options);
-	}
-	else
-	{
-			alert('您的浏览器不支持HTML5');
-	}
-	}
-	
-	//定义成功函数
-	function onSuccess(position)
-	{
-		alert('onSuccess');
-		//提取经纬度
-		var jing=position.coords.longitude;
-		var wei=position.coords.latitude;
-		alert(jing + ' ' + wei);
-		//创建地图
-		var map=new BMap.Map("container");
-		var point=new BMap.Point(jing,wei);
-		//设置地图中心坐标和地图级别
-		map.centerAndZoom(point,15);
-
-	}
-	//定义失败函数
-	function onError(error)
-	{
-	 switch(error.code)
-	 {
-	      case 1:
-		  alert('位置服务被拒绝');
-		  break;
-		   case 2:
-		  alert('暂时不可获取位置信息');
-		  break;
-		   case 3:
-		  alert('定位超时');
-		  break;
-		   case 4:
-		  alert('天了噜！您在火星吧？');
-		  break;
-		  default:
-		  alert('null');
-		  break;
-		  
-	 }	
-	}
-	
-	window.onload=getLocation;
-	
-	</script>
-    
+<script src="http://api.map.baidu.com/api?v=2.0&ak=jzytLGgPaD32DYXYCODjyDgm" type="text/javascript">
+//百度API
+</script>  
 </head>
 
 <body background="pic/bg.jpg">
@@ -514,19 +452,72 @@ var city=document.getElementById('citys').value;
 	  getWeather();
 	}
 	getWeather();
-	
-	//test
-	//var temper='\u79e6\u7687\u5c9b';
-	//var temper2='\u77f3\u5bb6\u5e84';
-	//var temper3='\u5137\u4eac';
-	//var trans=unescape(temper3);
-	//alert(trans);
 	</script>
- 
-  
     
-    
- <div id="container" style="width:100px;height:100px"></div>
+     <script>
+	//通过HTML5定位技术与百度API进行结合
+	function getLocation()
+	{
+		//初始化option属性
+		var options=
+		{
+			enableHighAccuracy:true,
+			maximumAge:1000
+		}
+		if(navigator.geolocation)
+	{
+		 
+		navigator.geolocation.getCurrentPosition(onSuccess,onError,options);
+	}
+	else
+	{
+			alert('您的浏览器不支持HTML5');
+	}
+	}
+	
+	//定义成功函数
+	function onSuccess(position)
+	{
+		//提取经纬度
+		var jing=position.coords.longitude;
+		var wei=position.coords.latitude;
+		//创建地图
+		var map=new BMap.Map("container");
+		var point=new BMap.Point(jing,wei);
+		//设置地图中心坐标和地图级别
+		map.centerAndZoom(point,15);
+		//开启滚轮缩放
+		map.enableScrollWheelZoom(true);
+
+	}
+	//定义失败函数
+	function onError(error)
+	{
+	 switch(error.code)
+	 {
+	      case 1:
+		  alert('位置服务被拒绝');
+		  break;
+		   case 2:
+		  alert('暂时不可获取位置信息');
+		  break;
+		   case 3:
+		  alert('定位超时');
+		  break;
+		   case 4:
+		  alert('天了噜！您在火星吧？');
+		  break;
+		  default:
+		  alert('null');
+		  break;
+		  
+	 }	
+	}
+	//异步加载地图
+	window.onload=getLocation;
+	
+	</script>
+ <div id="container" style="width:400px;height:100px"></div>
 
 </body>
 </html>
