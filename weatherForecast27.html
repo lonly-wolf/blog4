@@ -1,0 +1,563 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name='viewport' content="width=device-width" />
+<title>毛毛气象局</title>
+<style type="text/css">
+.mainClass {
+	font-family: Arial, Helvetica, sans-serif;
+	height: 200px;
+	width: 200px;
+}
+.textFont {
+	color: #0C0;
+}
+.result {
+	color: #6F0;
+	text-decoration: blink;
+}
+.result2 {
+	color: #9F3;
+	text-decoration: blink;
+}
+.result3 {
+	color: #6C3;
+	text-decoration: blink;
+}
+.result4 {
+	color: #9F9;
+	text-decoration: blink;
+}
+.result5 {
+	color: #9C3;
+	text-decoration: blink;
+}
+.local {
+	color: #CF0;
+	text-decoration: blink;
+}
+
+</style>
+
+<script src="http://pv.sohu.com/cityjson">
+//获取地理位置信息
+//标准JSON数据可以通过callback函数进行操作
+// var returnNium... 则需要引入js文件  然后通过returnNium...进行访问
+</script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=jzytLGgPaD32DYXYCODjyDgm" type="text/javascript">
+//百度API
+</script>  
+</head>
+
+<body background="pic/bg.jpg">
+<p id='locals' class='local'></p>
+<input type='text' id='newCity' value='城市名称' onmousedown="clearText()"/>
+&nbsp;<button type='button' onclick="fastSearch()">快速查找 </button>
+<br/>
+<p class="textFont">请选择要查询的城市：&nbsp;
+<select id='citys' onchange="changeText()">
+<option value="北京">北京</option>
+<option value="石家庄">石家庄</option>
+<option value="晋州"> 晋州 </option>
+<option value="唐山">唐山</option>
+<option value="天津">天津</option>
+<option value="大连">大连</option>
+<option value="铁岭">铁岭</option>
+<option value="保定">保定</option>
+<option value="沧州">沧州</option>
+<option value="廊坊">廊坊</option>
+<option value="霸州">霸州</option>
+</select>
+</p>
+<button onclick="getWeather()">今日天气</button>
+<button onclick="getFuture()">未来五天天气</button>
+<button onclick="getYesterday()">昨日天气</button>
+<br/><br/>
+<img src='' id='img_0'/>
+<p id='result_0' class='result' ></p>
+<img src='' id='img_1'/>
+<p id='result_1' class='result2'></p>
+<img src='' id='img_2'/>
+<p id='result_2' class='result3'></p>
+<img src='' id='img_3'/>
+<p id='result_3' class='result4'></p>
+<img src='' id='img_4'/>
+<p id='result_4' class='result5'></p>
+<p class="textFont">国家气象局实时数据更新</p>
+<script>
+'use strict'
+function goSearch()
+{
+	var search_city=document.getElementById('citys').value;
+	alert('您要查询的城市为：' + search_city);
+	
+}
+//构造回调函数
+//获取今日天气
+function requiredInfo(data)
+{
+	init();
+	initIcon();
+	var imgTemp=document.getElementById('img_0');
+    var weather_info=document.getElementById('result_0');
+	weather_info.innerHTML = '执行查询成功！';
+	weather_info.innerHTML='查询状态：' + data['desc'] + '<br/>' +
+	                            '感冒指数：' + data['data'].ganmao + '<br/>' +
+							         '城市：' + data['data'].city + '<br/>' +
+									     '天气：' + data['data'].forecast[0].type + '<br/>' +
+							                 '风向：' + data['data'].forecast[0].fengxiang + '<br/>'+
+								                 '风力：' + data['data'].forecast[0].fengli + '<br/>'+
+									                  '高温：' + data['data'].forecast[0].high + '<br/>'+
+										                   '低温：' + data['data'].forecast[0].low + '<br/>'+
+											                   '日期：' + data['data'].forecast[0].date + '<br/>'+
+															        'PM2.5：' + data['data'].aqi + '<br/>';
+	if(data['data'].forecast[0].type=="霾")
+				{
+					imgTemp.src="pic/mai.gif";
+
+                }
+				else if(data['data'].forecast[0].type=="晴")
+				{
+					imgTemp.src="pic/sun.gif";
+				}
+				else if(data['data'].forecast[0].type=="雾")
+				{
+					imgTemp.src="pic/wu.gif";
+				}
+				else if(data['data'].forecast[0].type=="多云")
+				{
+					imgTemp.src="pic/cloudy.gif";
+				}
+				else if(data['data'].forecast[0].type=="雨夹雪")
+				{
+					imgTemp.src="pic/rain-snow.gif";
+				}
+				else if(data['data'].forecast[0].type=="小雨")
+				{
+					imgTemp.src="pic/xiaoyu.gif";
+				}
+				else if(data['data'].forecast[0].type=="小雪")
+				{
+					imgTemp.src="pic/xiaoxue.gif";
+				}
+				else if(data['data'].forecast[0].type=="阴")
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				else if(data['data'].forecast[0].type=="阵雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else if(data['data'].forecast[0].type=="中到大雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				
+		        
+														
+																	  
+}
+//获取昨日天气
+function requiredInfo_2(data)
+{   
+    init();
+	initIcon();
+	var imgTemp=document.getElementById('img_0');
+    var weather_info=document.getElementById('result_0');
+	weather_info.innerHTML = '执行查询成功！';
+	weather_info.innerHTML='查询状态：' + data['desc'] + '<br/>' +
+							      '城市：' + data['data'].city + '<br/>'+
+									 '天气：' + data['data'].yesterday.type + '<br/>'+
+									      '风向：' +data['data'].yesterday.fx+ '<br/>'+
+								                 '风力：' +data['data'].yesterday.fl + '<br/>'+
+									                  '高温：' + data['data'].yesterday.high + '<br/>'+
+										                   '低温：' +data['data'].yesterday.low + '<br/>'+
+											                   '日期：' +  data['data'].yesterday.date + '<br/>'+
+															        'PM2.5：' + data['data'].aqi + '<br/>';
+	if(data['data'].yesterday.type=="霾")
+				{
+					imgTemp.src="pic/mai.gif";
+
+                }
+				else if(data['data'].yesterday.type=="晴")
+				{
+					imgTemp.src="pic/sun.gif";
+				}
+				else if(data['data'].yesterday.type=="雾")
+				{
+					imgTemp.src="pic/wu.gif";
+				}
+				else if(data['data'].yesterday.type=="多云")
+				{
+					imgTemp.src="pic/cloudy.gif";
+				}
+				else if(data['data'].yesterday.type=="雨夹雪")
+				{
+					imgTemp.src="pic/rain-snow.gif";
+				}
+				else if(data['data'].yesterday.type=="小雨")
+				{
+					imgTemp.src="pic/xiaoyu.gif";
+				}
+				else if(data['data'].yesterday.type=="小雪")
+				{
+					imgTemp.src="pic/xiaoxue.gif";
+				}
+				else if(data['data'].yesterday.type=="阴")
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				else if(data['data'].yesterday.type=="阵雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else if(data['data'].yesterday.type=="中到大雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				
+		        
+									     
+							                
+}
+//获取未来四天天气
+function requiredInfo_3(data)
+{
+	      init();
+		  initIcon();
+          var i=0;
+		  var temp;
+		  var imgTemp;
+		   for(i=0;i<5;i++)
+		  {
+			    temp=document.getElementById('result_' + i);
+				imgTemp=document.getElementById('img_' + i);
+			    temp.innerHTML = '执行查询成功！';
+		        temp.innerHTML='查询状态：' + data['desc'] + '<br/>' +
+	                            '感冒指数：' + data['data'].ganmao + '<br/>' +
+							        '城市：' + data['data'].city + '<br/>' +
+									     '天气：' + data['data'].forecast[i].type + '<br/>' +
+							                 '风向：' + data['data'].forecast[i].fengxiang + '<br/>'+
+								                 '风力：' + data['data'].forecast[i].fengli + '<br/>'+
+									                  '高温：' + data['data'].forecast[i].high + '<br/>'+
+										                   '低温：' + data['data'].forecast[i].low + '<br/>'+
+											                   '日期：' + data['data'].forecast[i].date + '<br/>'+
+															        'PM2.5：' + data['data'].aqi + '<br/>';
+				if(data['data'].forecast[i].type=="霾")
+				{
+					imgTemp.src="pic/mai.gif";
+
+                }
+				else if(data['data'].forecast[i].type=="晴")
+				{
+					imgTemp.src="pic/sun.gif";
+				}
+				else if(data['data'].forecast[i].type=="雾")
+				{
+					imgTemp.src="pic/wu.gif";
+				}
+				else if(data['data'].forecast[i].type=="多云")
+				{
+					imgTemp.src="pic/cloudy.gif";
+				}
+				else if(data['data'].forecast[i].type=="雨夹雪")
+				{
+					imgTemp.src="pic/rain-snow.gif";
+				}
+				else if(data['data'].forecast[i].type=="小雨")
+				{
+					imgTemp.src="pic/xiaoyu.gif";
+				}
+				else if(data['data'].forecast[i].type=="小雪")
+				{
+					imgTemp.src="pic/xiaoxue.gif";
+				}
+				else if(data['data'].forecast[i].type=="阴")
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				else if(data['data'].forecast[i].type=="阵雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else if(data['data'].forecast[i].type=="中到大雪")
+				{
+					imgTemp.src="pic/snow.gif";
+				}
+				else
+				{
+					imgTemp.src="pic/yin.gif";
+				}
+				
+		        
+																	
+		  }
+	
+																	
+																	
+}
+//函数初始化
+function init()
+{ 
+var i=0;
+var temp;
+   for(i=0;i<5;i++)
+		  {
+			  temp=document.getElementById('result_' + i);
+			  temp.innerHTML = '';
+		  }
+
+}
+//天气图标初始化
+function initIcon()
+{
+	      var i=0;
+		  var imgTemp;
+		   for(i=0;i<5;i++)
+		  {
+			  imgTemp=document.getElementById('img_' + i);
+			  imgTemp.src='pic/12161.jpg';
+		  }
+}
+
+
+//构造本地化脚本函数
+function getWeather()
+{
+	var city=document.getElementById('citys').value;
+	var js=document.createElement('script');
+	var head=document.getElementsByTagName('head')[0];
+	js.src='http://wthrcdn.etouch.cn/weather_mini?city='+ city +'&callback=requiredInfo';
+	head.appendChild(js);
+}
+
+function getYesterday()
+{ 
+var city=document.getElementById('citys').value;
+	var js=document.createElement('script');
+	var head=document.getElementsByTagName('head')[0];
+	js.src='http://wthrcdn.etouch.cn/weather_mini?city='+ city +'&callback=requiredInfo_2';
+	head.appendChild(js);
+}
+
+function getFuture()
+{ 
+var city=document.getElementById('citys').value;
+	var js=document.createElement('script');
+	var head=document.getElementsByTagName('head')[0];
+	js.src='http://wthrcdn.etouch.cn/weather_mini?city='+ city +'&callback=requiredInfo_3';
+	head.appendChild(js);
+}
+</script>
+    <script type="text/javascript">
+	//定位功能实现模块  
+    //默认为GBK可通过ie参数设置编码
+	var start;
+	var end; 
+	var temp=1; //城市特征定位
+	var i;
+	var localCity=returnCitySN['cname'];
+	if(localCity==null)
+	{
+		localCity='河北省石家庄市';
+	}
+	start=localCity.indexOf('省');
+	end=localCity.indexOf('市');
+	//alert(localCity + ' ' + ' ' + start + ' ' + end);
+    localCity=localCity.substring(start+1,end); //substring(start,end) substr(start,length)
+	var cityList=document.getElementById('citys');
+	var locals=document.getElementById('locals');
+	locals.innerHTML='您当前所在的城市为：' + localCity;
+	for(i=0;i<cityList.length;i++)
+	{
+		if(cityList.options[i].value==localCity)
+		{
+		temp=0;
+		break;
+		}
+		else
+		{
+			temp=1;
+			
+		}
+		
+	}
+	if(temp)
+	{
+		 cityList.options.add(new Option(localCity,localCity));
+	}
+   
+	cityList.value=localCity;
+    </script>  
+    
+    <script>
+	//快速城市查找功能实现
+	function clearText()
+	{
+		var text=document.getElementById('newCity');
+		text.value='';
+	}
+	function fastSearch()
+	{
+	  var newcity=document.getElementById('newCity');
+	  var cityList=document.getElementById('citys');
+	  if(newcity.value!='' & newcity.value!='城市名称' )
+	  {
+	  for(i=0;i<cityList.length;i++)
+	{
+		if(cityList.options[i].value==newcity.value)
+		{
+		temp=0;
+		break;
+		}
+		else
+		{
+			temp=1;
+			
+		}
+		
+	}
+	if(temp)
+	{
+		 cityList.options.add(new Option(newcity.value,newcity.value));
+	}
+   
+	cityList.value=newcity.value;
+	//如果查找的城市不存在就添加到option 并将该城市显示在select.selected
+	//自动获取当天天气
+	getWeather();
+	  }
+	  else
+	  {
+		  alert('请输入城市名称（例如 北京）');
+		  newcity.value =cityList.value;
+	  }
+	
+	}
+	
+	function changeText()
+	{
+		var newcity=document.getElementById('newCity');
+	  var cityList=document.getElementById('citys');
+	  newcity.value=cityList.value;
+	  getWeather();
+	}
+	getWeather();
+	</script>
+    
+     <script>
+	//通过HTML5定位技术与百度API进行结合
+	function getLocation()
+	{
+		//初始化option属性
+		var options=
+		{
+			enableHighAccuracy:true,
+			maximumAge:1000
+		}
+		if(navigator.geolocation)
+	{
+		 
+		navigator.geolocation.getCurrentPosition(onSuccess,onError,options);
+	}
+	else
+	{
+			alert('您的浏览器不支持HTML5');
+	}
+	}
+	
+	//定义成功函数
+	function onSuccess(position)
+	{
+		//提取当前地区经纬度
+		var jing=position.coords.longitude;
+		var wei=position.coords.latitude;
+		//创建地图
+		var map=new BMap.Map("container");
+		var point=new BMap.Point(jing,wei);
+		//设置地图中心坐标和地图级别
+		map.centerAndZoom(point,12);
+		//开启滚轮缩放
+		map.enableScrollWheelZoom(true);
+		//经纬度逆向地址解析
+		var geoc=new BMap.Geocoder();
+		  var pt =point;
+		geoc.getLocation(pt, function(rs){
+			var addComp = rs.addressComponents;
+			//alert(  addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+			alert('您的城市为：' + addComp.city);
+			//第一次通过IP地址定位 第二次通过经纬度定位
+			var locals=document.getElementById('locals');
+	       if( locals.innerHTML=='您当前所在的城市为：')
+		   {
+			   alert('ip定位失败，正在通过经纬度定位！');
+			  var end=addComp.city.indexOf('市');
+			  alert(end);
+               var tempCity=addComp.city.substring(0,end); //substring(start,end) substr(start,length)
+			   alert( '经纬定位城市为：' + tempCity);
+			   
+		   }
+			
+			//创建当前位置所在的标注
+			var mk=new BMap.Marker(pt);
+			map.addOverlay(mk);
+		    map.panTo(pt);
+			//添加比例尺控件
+			// 左上角，添加比例尺
+			var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+			//左上角，添加默认缩放平移控件
+	        var top_left_navigation = new BMap.NavigationControl(); 
+			//右上角，仅包含平移和缩放按钮
+	       // var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); 
+	        map.addControl(top_left_control);        
+		    map.addControl(top_left_navigation);     
+		   // map.addControl(top_right_navigation); 
+			//添加全景视图
+			  //覆盖区域图层测试
+			  map.addTileLayer(new BMap.PanoramaCoverageLayer());
+			  //构造全景视图
+			  var stCtrl=new BMap.PanoramaControl();
+			  stCtrl.setOffset(new BMap.Size(20,20));
+			  map.addControl(stCtrl);
+        });
+		}
+	//定义失败函数
+	function onError(error)
+	{
+	 switch(error.code)
+	 {
+	      case 1:
+		  alert('位置服务被拒绝');
+		  break;
+		   case 2:
+		  alert('暂时不可获取位置信息');
+		  break;
+		   case 3:
+		  alert('定位超时');
+		  break;
+		   case 4:
+		  alert('天了噜！您在火星吧？');
+		  break;
+		  default:
+		  alert('null');
+		  break;
+		  
+	 }	
+	}
+	//异步加载地图
+	window.onload=getLocation;
+	
+	</script>
+ <div id="container" style="width:380px;height:450px"></div>
+
+</body>
+</html>
