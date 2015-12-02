@@ -387,7 +387,10 @@ var city=document.getElementById('citys').value;
     localCity=localCity.substring(start+1,end); //substring(start,end) substr(start,length)
 	var cityList=document.getElementById('citys');
 	var locals=document.getElementById('locals');
+	if(end >0)
+	{
 	locals.innerHTML='您当前所在的城市为：' + localCity;
+	}
 	for(i=0;i<cityList.length;i++)
 	{
 		if(cityList.options[i].value==localCity)
